@@ -413,6 +413,7 @@ local function ModifyUnitTooltip()
 		lineInfo[#lineInfo + 1] = " ";
 		lineInfo[#lineInfo + 1] = (TT_ClassColors[classEng] or COL_WHITE);
 		lineInfo[#lineInfo + 1] = class;
+		lineInfo[#lineInfo + 1] = " "
 		u.classEng = classEng;
 		-- name
 		lineOne[#lineOne + 1] = (cfg.colorNameByClass and (TT_ClassColors[classEng] or COL_WHITE) or reaction);
@@ -479,6 +480,24 @@ local function ModifyUnitTooltip()
 			end
 		end
 	end
+
+	if UnitIsPlayer(unit) then
+		ItemLevelMixIn:Request(unit)
+
+		local unitGUID = UnitGUID(unit)
+		local tooltipLine = TOOLTIP_UNIT_LEVEL_ILEVEL_LABEL
+
+		if unitGUID then
+			local itemLevel = ItemLevelMixIn:GetItemLevel( unitGUID )
+			if itemLevel then
+				local color = ItemLevelMixIn:GetColor(itemLevel)
+				tooltipLine = string.gsub(TOOLTIP_UNIT_LEVEL_ILEVEL_LABEL, TOOLTIP_UNIT_LEVEL_ILEVEL_LOADING_LABEL, color:WrapTextInColorCode(itemLevel))
+			end
+		end
+
+		lineInfo[#lineInfo + 1] = "\n|cffFFFFFF"..tooltipLine.."|r";
+	end
+
 	-- Reaction Text
 	if (cfg.reactText) then
 		lineInfo[#lineInfo + 1] = "\n";
