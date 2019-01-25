@@ -498,7 +498,9 @@ local function ModifyUnitTooltip()
 			end
 		end
 
-		lineInfo[#lineInfo + 1] = "\n|cffFFFFFF"..tooltipLine.."|r";
+		if not UnitIsEnemy("player", unit) then
+			lineInfo[#lineInfo + 1] = "\n|cffFFFFFF"..tooltipLine.."|r";
+		end
 	end
 
 	-- Reaction Text
