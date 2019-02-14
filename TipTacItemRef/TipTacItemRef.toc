@@ -2,5 +2,5 @@
 ## Version: 10.02.27
 ## Title: TipTacItemRef
 ## Author: Aezay (Earthen Ring EU)
-## Notes: Improved ItemRefTooltip
+## Notes: |@Version: 1.0.1@|Improved ItemRefTooltip
 core.lua
