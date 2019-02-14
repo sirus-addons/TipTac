@@ -2,6 +2,6 @@
 ## Version: 10.05.01
 ## Title: TipTac
 ## Author: Aezay (Earthen Ring EU)
-## Notes: |@Version: 1.0.1@|Highly Customizable Tooltip Enhancement Addon
+## Notes: |@Version: 1@|Highly Customizable Tooltip Enhancement Addon
 ## SavedVariables: TipTac_Config
 core.lua

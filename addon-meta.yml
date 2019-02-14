@@ -1,4 +1,4 @@
 name: TipTac
 description: README.md
-version: 1.0.1
+version: 1
 directories: ["TipTac", "TipTacItemRef", "TipTacOptions", "TipTacTalents"]
