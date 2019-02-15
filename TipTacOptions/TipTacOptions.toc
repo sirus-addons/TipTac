@@ -2,7 +2,7 @@
 ## Version: 10.05.01
 ## Title: TipTacOptions
 ## Author: Aezay (Earthen Ring EU)
-## Notes: |@Version: 1@|Option Dialog for TipTac
+## Notes: |@Version: 2@|Option Dialog for TipTac
 ## Dependencies: TipTac
 ## LoadOnDemand: 1
 Libs\AzDropDown.lua
