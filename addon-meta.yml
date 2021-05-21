@@ -1,4 +1,5 @@
 name: TipTac
 description: README.md
 version: 2
+category: 21
 directories: ["TipTac", "TipTacItemRef", "TipTacOptions", "TipTacTalents"]
