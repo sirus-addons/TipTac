@@ -6,34 +6,34 @@ local LSM = LibStub and LibStub("LibSharedMedia-3.0",1);
 
 -- DropDown Lists
 TipTacDropDowns.FontFlags = {
-	["|cffffa0a0None"] = "",
-	["Outline"] = "OUTLINE",
-	["Thick Outline"] = "THICKOUTLINE",
+	["|cffffa0a0Нет"] = "",
+	["Тонкий"] = "OUTLINE",
+	["Толстый"] = "THICKOUTLINE",
 };
 TipTacDropDowns.AnchorType = {
-	["Normal Anchor"] = "normal",
-	["Mouse Anchor"] = "mouse",
-	["Parent Anchor"] = "parent",
+	["Обычный"] = "normal",
+	["Указатель мыши"] = "mouse",
+	["Исходный"] = "parent",
 };
 
 TipTacDropDowns.AnchorPos = {
-	["Top"] = "TOP",
-	["Top Left"] = "TOPLEFT",
-	["Top Right"] = "TOPRIGHT",
-	["Bottom"] = "BOTTOM",
-	["Bottom Left"] = "BOTTOMLEFT",
-	["Bottom Right"] = "BOTTOMRIGHT",
-	["Left"] = "LEFT",
-	["Right"] = "RIGHT",
-	["Center"] = "CENTER",
+	["Сверху"] = "TOP",
+	["Сверху слева"] = "TOPLEFT",
+	["Сверху справа"] = "TOPRIGHT",
+	["Снизу"] = "BOTTOM",
+	["Снизу слева"] = "BOTTOMLEFT",
+	["Снизу справа"] = "BOTTOMRIGHT",
+	["Слева"] = "LEFT",
+	["Справа"] = "RIGHT",
+	["Центр"] = "CENTER",
 };
 
 TipTacDropDowns.BarTextFormat = {
-	["|cffffa0a0None"] = "none",
-	["Percentage"] = "percent",
-	["Values"] = "value",
-	["Auto Values"] = "auto",
-	["Deficit"] = "deficit",
+	["|cffffa0a0Не показывать"] = "none",
+	["Процент"] = "percent",
+	["Число"] = "value",
+	["Число (кратко)"] = "auto",
+	["Нехватка"] = "deficit",
 };
 
 --------------------------------------------------------------------------------------------------------

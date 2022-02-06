@@ -1,8 +1,9 @@
 ## Interface: 30300
 ## Version: 10.05.01
 ## Title: TipTacOptions
-## Author: Aezay (Earthen Ring EU)
+## Author: Aezay (Earthen Ring EU), Мастер (перевёл на русский)
 ## Notes: |@Version: 2@|Option Dialog for TipTac
+## Notes-ruRU: |@Version: 2@|Настройки
 ## Dependencies: TipTac
 ## LoadOnDemand: 1
 Libs\AzDropDown.lua

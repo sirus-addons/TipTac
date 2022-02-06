@@ -8,167 +8,168 @@ local frames = {};
 local options = {
 	-- General
 	{
-		[0] = "General",
-		{ type = "Check", var = "showUnitTip", label = "Enable TipTac Unit Tip Appearance", tip = "Will change the appearance of how unit tips look. Many options in TipTac only work with this setting enabled", y = 8 },
-		{ type = "Check", var = "showStatus", label = "Show DC, AFK and DND Status", tip = "Will show the <DC>, <AFK> and <DND> status after the player name" },
-		{ type = "Check", var = "showGuildRank", label = "Show Player Guild Rank Title", tip = "In addition to the guild name, with this option on, you will also see their guild rank by title" },
-		{ type = "Check", var = "showTargetedBy", label = "Show Who Targets the Unit", tip = "When in a raid or party, the tip will show who from your group is targeting the unit", y = 16 },
-		{ type = "DropDown", var = "nameType", label = "Name Type", list = { ["Name only"] = "normal", ["Use player titles"] = "title", ["Copy from original tip"] = "original" } },
-		{ type = "DropDown", var = "showRealm", label = "Show Unit Realm", list = { ["Do not show realm"] = "none", ["Show realm"] = "show", ["Show (*) instead"] = "asterisk" } },
-		{ type = "DropDown", var = "showTarget", label = "Show Unit Target", list = { ["Do not show target"] = "none", ["First line"] = "first", ["Second line"] = "second", ["Last line"] = "last" }, y = 16 },
-		{ type = "Text", var = "targetYouText", label = "Targeting You Text" },
+		[0] = "Общие",
+		{ type = "Check", var = "showUnitTip", label = "Включить подсказки TipTac", tip = "Изменить внешний вид подсказок. Многие параметры в TipTac работают только при включенном этом параметре.", y = 8 },
+		{ type = "Check", var = "showStatus", label = "Показать статус DC, AFK и DND", tip = "Показать статус <DC-не в сети>, <AFK-отсутствует> и <DND-не беспокоить> после имени игрока." },
+		{ type = "Check", var = "showGuildRank", label = "Показать звание игрока в гильдии", tip = "В дополнение к названию гильдии, если эта опция включена, вы также увидите звание игрока в гильдии." },
+		{ type = "Check", var = "showTargetedBy", label = "Показать, кто нацелился на вашу цель", tip = "Находясь в рейде или группе, подсказка покажет, кто из вашей группы нацелился на вашу цель.", y = 16 },
+		{ type = "DropDown", var = "nameType", label = "Имя", list = { ["Только имя"] = "normal", ["Имя и звание"] = "title", ["Использовать исходник"] = "original" } },
+		{ type = "DropDown", var = "showRealm", label = "Игровой мир", list = { ["Показать"] = "show", ["Не показывать"] = "none", ["Показать (*) вместо"] = "asterisk" } },
+		{ type = "DropDown", var = "showTarget", label = "Показать цель", list = { ["Не показывать цель"] = "none", ["Первая строка"] = "first", ["Вторая строка"] = "second", ["Последняя строка"] = "last" }, y = 16 },
+		{ type = "Text", var = "targetYouText", label = "Свой текст" },
 	},
 	-- Special
 	{
-		[0] = "Special",
-		{ type = "Slider", var = "gttScale", label = "GameTooltip Scale", min = 0.2, max = 4, step = 0.05 },
-		{ type = "Slider", var = "updateFreq", label = "Tip Update Frequency", min = 0, max = 5, step = 0.05 },
+		[0] = "Спец.",
+		{ type = "Slider", var = "gttScale", label = "Масштаб", min = 0.2, max = 4, step = 0.05 },
+		{ type = "Slider", var = "updateFreq", label = "Частота обновления", min = 0, max = 5, step = 0.05 },
  	},
 	-- Colors
 	{
-		[0] = "Colors",
-		{ type = "Color", subType = 2, var = "colSameGuild", label = "Same Guild Color", tip = "To better recognise players from your guild, you can configure the the color of your guild name individually" },
-		{ type = "Color", subType = 2, var = "colRace", label = "Race & Creature Type Color", tip = "The color of the race and creature type text" },
-		{ type = "Color", subType = 2, var = "colLevel", label = "Neutral Level Color", tip = "Units you cannot attack will have their level text shown in this color", y = 12 },
-		{ type = "Check", var = "colorNameByClass", label = "Color Player Names by Class Color", tip = "With this option on, player names are colored by their class color, otherwise they will be colored by reaction" },
-		{ type = "Check", var = "classColoredBorder", label = "Color Tip Border by Class Color", tip = "For players, the border color will be colored to match the color of their class", y = 12 },
-		{ type = "Check", var = "itemQualityBorder", label = "Show Item Tips with Quality Colored Border", tip = "When enabled and the tip is showing an item, the tip border will have the color of the item's quality\nNOTE: The Hook Special Tips option must be enabled" },
+		[0] = "Цвета",
+		{ type = "Color", subType = 2, var = "colSameGuild", label = "Цвет названия гильдии", tip = "Чтобы лучше узнавать согильдийцев, вы можете настроить цвет для названия вашей гильдии." },
+		{ type = "Color", subType = 2, var = "colRace", label = "Цвет расы и типа существа", tip = "Цвет текста для расы или типа существа" },
+		{ type = "Color", subType = 2, var = "colLevel", label = "Цвет нейтральных существ", tip = "Цвет текста для нейтральных существ.", y = 12 },
+		{ type = "Check", var = "colorNameByClass", label = "Окрасить имена игроков по цвету класса", tip = "Если эта опция включена, имена игроков окрашиваются в цвет их класса, в противном случае они будут окрашиваться в зависимости от отношения к вам." },
+		{ type = "Check", var = "classColoredBorder", label = "Окрасить границу подсказки по цвету класса", tip = "Для игроков, цвет границы подсказки будет окрашен, в соответствии с цветом их класса.", y = 12 },
+		{ type = "Check", var = "itemQualityBorder", label = "Окрасить границу подсказки у предметов", tip = "Если этот параметр включен и подсказка показывает предмет, граница подсказки будет иметь цвет рамки предмета.\nВНИМАНИЕ! Должна быть включена опция «Специальные подсказки»." },
 	},
 	-- Reactions
 	{
-		[0] = "Reactions",
-		{ type = "Check", var = "reactText", label = "Show the unit's reaction as text", tip = "With this option on, the reaction of the unit will be shown as text on the last line", y = 42 },
-		{ type = "Color", subType = 2, var = "colReactText1", label = "Tapped Color" },
-		{ type = "Color", subType = 2, var = "colReactText2", label = "Hostile Color" },
-		{ type = "Color", subType = 2, var = "colReactText3", label = "Caution Color" },
-		{ type = "Color", subType = 2, var = "colReactText4", label = "Neutral Color" },
-		{ type = "Color", subType = 2, var = "colReactText5", label = "Friendly NPC or PvP Player Color" },
-		{ type = "Color", subType = 2, var = "colReactText6", label = "Friendly Player Color" },
-		{ type = "Color", subType = 2, var = "colReactText7", label = "Dead Color" },
+		[0] = "Репутация",
+		{ type = "Check", var = "reactText", label = "Показать отношение объекта к вам", tip = "При включенной опции, отношение объекта будет отображаться в виде текста в последней строке.", y = 42 },
+		{ type = "Color", subType = 2, var = "colReactText1", label = "Tapped" },
+		{ type = "Color", subType = 2, var = "colReactText2", label = "Враждебность" },
+		{ type = "Color", subType = 2, var = "colReactText3", label = "Неприязнь" },
+		{ type = "Color", subType = 2, var = "colReactText4", label = "Равнодушие" },
+		{ type = "Color", subType = 2, var = "colReactText5", label = "Дружественный NPC или PvP-игрок" },
+		{ type = "Color", subType = 2, var = "colReactText6", label = "Дружественный игрок" },
+		{ type = "Color", subType = 2, var = "colReactText7", label = "Мёрт" },
 	},
 	-- BG Color
 	{
-		[0] = "BG Color",
-		{ type = "Check", var = "reactColoredBackdrop", label = "Color backdrop based on the unit's reaction", tip = "If you want the tip's background color to be determined by the unit's reaction towards you, enable this. With the option off, the background color will be the one selected on the 'Backdrop' page" },
-		{ type = "Check", var = "reactColoredBorder", label = "Color border based on the unit's reaction", tip = "Same as the above option, just for the border\nNOTE: This option overrides class colored border", y = 20 },
-		{ type = "Color", var = "colReactBack1", label = "Tapped Color" },
-		{ type = "Color", var = "colReactBack2", label = "Hostile Color" },
-		{ type = "Color", var = "colReactBack3", label = "Caution Color" },
-		{ type = "Color", var = "colReactBack4", label = "Neutral Color" },
-		{ type = "Color", var = "colReactBack5", label = "Friendly NPC or PvP Player Color" },
-		{ type = "Color", var = "colReactBack6", label = "Friendly Player Color" },
-		{ type = "Color", var = "colReactBack7", label = "Dead Color" },
+		[0] = "Цвет фона",
+		{ type = "Check", var = "reactColoredBackdrop", label = "Цвет фона на основе отношения", tip = "Окрашивает фон подсказки выбранным цветом. Если этот параметр отключен, цвет фона будет выбран из раздела «Фон»." },
+		{ type = "Check", var = "reactColoredBorder", label = "Цвет границы на основе отношения", tip = "То же, что и предыдущий вариант, только для границы.\nВНИМАНИЕ! Этот параметр переопределяет настройку «Окрасить границу подсказки по цвету класса».", y = 20 },
+		{ type = "Color", var = "colReactBack1", label = "Tapped" },
+		{ type = "Color", var = "colReactBack2", label = "Враждебность" },
+		{ type = "Color", var = "colReactBack3", label = "Неприязнь" },
+		{ type = "Color", var = "colReactBack4", label = "Равнодушие" },
+		{ type = "Color", var = "colReactBack5", label = "Дружественный NPC или PvP-игрок" },
+		{ type = "Color", var = "colReactBack6", label = "Дружественный игрок" },
+		{ type = "Color", var = "colReactBack7", label = "Мёрт" },
 	},
 	-- Backdrop
 	{
-		[0] = "Backdrop",
-		{ type = "DropDown", var = "tipBackdropBG", label = "Background Texture", media = "background" },
-		{ type = "DropDown", var = "tipBackdropEdge", label = "Border Texture", media = "border", y = 8 },
-		{ type = "Slider", var = "backdropEdgeSize", label = "Backdrop Edge Size", min = 0, max = 64, step = 0.5 },
-		{ type = "Slider", var = "backdropInsets", label = "Backdrop Insets", min = -20, max = 20, step = 0.5, y = 18 },
-		{ type = "Color", var = "tipColor", label = "Tip Background Color" },
-		{ type = "Color", var = "tipBorderColor", label = "Tip Border Color", y = 10 },
-		{ type = "Check", var = "gradientTip", label = "Show Gradient Tip", tip = "Display a small gradient area at the top of the tip to add a minor 3D effect to it. If you have an addon like Skinner, you may wish to disable this to avoid conflicts", y = 6 },
-		{ type = "Color", var = "gradientColor", label = "Gradient Color", tip = "Select the base color for the gradient" },
+		[0] = "Фон",
+		{ type = "DropDown", var = "tipBackdropBG", label = "Текстура фона", media = "background" },
+		{ type = "DropDown", var = "tipBackdropEdge", label = "Текстура границы", media = "border", y = 8 },
+		{ type = "Slider", var = "backdropEdgeSize", label = "Размер границы", min = 0, max = 64, step = 0.5 },
+		{ type = "Slider", var = "backdropInsets", label = "Размер фоновой текстуры", min = -20, max = 20, step = 0.5, y = 18 },
+		{ type = "Color", var = "tipColor", label = "Цвет фона подсказки" },
+		{ type = "Color", var = "tipBorderColor", label = "Цвет границы подсказки", y = 10 },
+		{ type = "Check", var = "gradientTip", label = "Показать градиент", tip = "Отобразить небольшую область градиента, в верхней части, чтобы добавить к нему 3D-эффект. Если у вас стоит аддон Skinner, отключите его, для избежания конфликтов.", y = 6 },
+		{ type = "Color", var = "gradientColor", label = "Цвет градиента", tip = "Выберите основной цвет для градиента." },
 	},
 	-- Font
 	{
-		[0] = "Font",
-		{ type = "Check", var = "modifyFonts", label = "Modify the GameTooltip Font Templates", tip = "For TipTac to change the GameTooltip font templates, and thus all tooltips in the User Interface, you have to enable this option.\nNOTE: If you have an addon such as ClearFont, it might conflict with this option.", y = 12 },
-		{ type = "DropDown", var = "fontFace", label = "Font Face", media = "font" },
-		{ type = "DropDown", var = "fontFlags", label = "Font Flags", list = TipTacDropDowns.FontFlags },
-		{ type = "Slider", var = "fontSize", label = "Font Size", min = 6, max = 29, step = 1 },
+		[0] = "Шрифт",
+		{ type = "Check", var = "modifyFonts", label = "Изменить шрифт подсказок", tip = "Чтобы изменить шрифт, вы должны включить эту опцию в пользовательском интерфейсе.\nВНИМАНИЕ! Если у вас есть надстройка, например ClearFont, она может конфликтовать с этой опцией.", y = 12 },
+		{ type = "DropDown", var = "fontFace", label = "Шрифт", media = "font" },
+		{ type = "DropDown", var = "fontFlags", label = "Контур", list = TipTacDropDowns.FontFlags },
+		{ type = "Slider", var = "fontSize", label = "Размер", min = 6, max = 29, step = 1 },
 	},
 	-- Classify
 	{
-		[0] = "Classify",
-		{ type = "Text", var = "classification_normal", label = "Normal" },
-		{ type = "Text", var = "classification_elite", label = "Elite" },
-		{ type = "Text", var = "classification_worldboss", label = "Boss" },
-		{ type = "Text", var = "classification_rare", label = "Rare" },
-		{ type = "Text", var = "classification_rareelite", label = "Rare Elite" },
+		[0] = "Тип NPC",
+		{ type = "Text", var = "classification_normal", label = "Обычный" },
+		{ type = "Text", var = "classification_elite", label = "Элитный" },
+		{ type = "Text", var = "classification_worldboss", label = "Босс" },
+		{ type = "Text", var = "classification_rare", label = "Редкий" },
+		{ type = "Text", var = "classification_rareelite", label = "Редкий элитный" },
 	},
 	-- Fading
 	{
-		[0] = "Fading",
-		{ type = "Check", var = "overrideFade", label = "Override Default GameTooltip Fade", tip = "Overrides the default fadeout function of the GameTooltip. If you are seeing problems regarding fadeout, please disable.", y = 16 },
-		{ type = "Slider", var = "preFadeTime", label = "Prefade Time", min = 0, max = 5, step = 0.05 },
-		{ type = "Slider", var = "fadeTime", label = "Fadeout Time", min = 0, max = 5, step = 0.05, y = 16 },
-		{ type = "Check", var = "hideWorldTips", label = "Instantly Hide World Frame Tips", tip = "This option will make tips which appear from objects in the world disappear instantly when you take the mouse off the object. Examples such as mailboxes, herbs or veins.\nNOTE: Does not work for all world objects." },
+		[0] = "Затухание",
+		{ type = "Check", var = "overrideFade", label = "Переопределить затухание", tip = "Переопределяет функцию постепенного исчезновения подсказок. Если вы видите проблемы с затуханием, отключите её.", y = 16 },
+		{ type = "Slider", var = "preFadeTime", label = "Задержка скрытия", min = 0, max = 5, step = 0.05 },
+		{ type = "Slider", var = "fadeTime", label = "Скорость затухания", min = 0, max = 5, step = 0.05, y = 16 },
+		{ type = "Check", var = "hideWorldTips", label = "Мгновенно скрывать подсказки объектов", tip = "Эта опция заставит подсказки, которые появляются от объектов в мире, мгновенно исчезать, когда вы убираете мышь с объекта. Например, почтовые ящики, травы или рудные жилы.\nВНИМАНИЕ! Работает не со всеми объектами." },
 	},
 	-- Bars
 	{
-		[0] = "Bars",
-		{ type = "Check", var = "hideDefaultBar", label = "Hide the Default Health Bar", tip = "Check this to hide the default health bar" },
-		{ type = "Check", var = "healthBar", label = "Show Health Bar", tip = "Will show a health bar of the unit." },
-		{ type = "DropDown", var = "healthBarText", label = "Health Bar Text", list = TipTacDropDowns.BarTextFormat, y = -2 },
-		{ type = "Check", var = "healthBarClassColor", label = "Class Colored Health Bar", tip = "This options colors the health bar in the same color as the player class", y = 6 },
-		{ type = "Color", var = "healthBarColor", label = "Health Bar Color", tip = "The color of the health bar. Has no effect for players with the option above enabled", y = 10 },
-		{ type = "Check", var = "manaBar", label = "Show Mana Bar", tip = "If the unit has mana, a mana bar will be shown." },
-		{ type = "DropDown", var = "manaBarText", label = "Mana Bar Text", list = TipTacDropDowns.BarTextFormat },
-		{ type = "Color", var = "manaBarColor", label = "Mana Bar Color", tip = "The color of the mana bar", y = 10 },
-		{ type = "Check", var = "powerBar", label = "Show Energy, Rage, Runic Power or Focus Bar", tip = "If the unit uses either energy, rage, runic power or focus, a bar for that will be shown." },
-		{ type = "DropDown", var = "powerBarText", label = "Power Bar Text", list = TipTacDropDowns.BarTextFormat },
+		[0] = "Полосы",
+		{ type = "Check", var = "hideDefaultBar", label = "Скрыть полосу здоровья", tip = "Отметьте, чтобы скрыть полосу здоровья по умолчанию?" },
+		{ type = "Check", var = "healthBar", label = "Полоса здоровья", tip = "Показать полосу здоровья." },
+		{ type = "DropDown", var = "healthBarText", label = "Текст полосы здоровья", list = TipTacDropDowns.BarTextFormat, y = -2 },
+		{ type = "Check", var = "healthBarClassColor", label = "Цвет полосы здоровья по классу", tip = "Эта опция окрашивает полосу здоровья в зависимости от класса.", y = 6 },
+		{ type = "Color", var = "healthBarColor", label = "Свой цвет полосы здоровья", tip = "Установите свой цвет полосы здоровья. Не действует на игроков с включенной опцией выше.", y = 10 },
+		{ type = "Check", var = "manaBar", label = "Полоса маны", tip = "Показать полосу запаса маны, если она есть." },
+		{ type = "DropDown", var = "manaBarText", label = "Текст полосы маны", list = TipTacDropDowns.BarTextFormat },
+		{ type = "Color", var = "manaBarColor", label = "Свой цвет полосы маны", tip = "Установите свой цвет полосы маны.", y = 10 },
+		{ type = "Check", var = "powerBar", label = "Полосы энергии, ярости или силы рун", tip = "Показать полосы энергии, ярости или силу рун." },
+		{ type = "DropDown", var = "powerBarText", label = "Текст полосы энергии", list = TipTacDropDowns.BarTextFormat },
 	},
 	-- Bars Misc
 	{
-		[0] = "Bars Look",
-		{ type = "DropDown", var = "barFontFace", label = "Font Face", media = "font" },
-		{ type = "DropDown", var = "barFontFlags", label = "Font Flags", list = TipTacDropDowns.FontFlags },
-		{ type = "Slider", var = "barFontSize", label = "Font Size", min = 6, max = 29, step = 1, y = 36 },
-		{ type = "DropDown", var = "barTexture", label = "Bar Texture", media = "statusbar" },
-		{ type = "Slider", var = "barHeight", label = "Bar Height", min = 1, max = 50, step = 1 },
+		[0] = "Шрифт",
+		{ type = "DropDown", var = "barFontFace", label = "Шрифт", media = "font" },
+		{ type = "DropDown", var = "barFontFlags", label = "Контур", list = TipTacDropDowns.FontFlags },
+		{ type = "Slider", var = "barFontSize", label = "Размер", min = 6, max = 29, step = 1, y = 36 },
+		{ type = "DropDown", var = "barTexture", label = "Текстура", media = "statusbar" },
+		{ type = "Slider", var = "barHeight", label = "Высота", min = 1, max = 50, step = 1 },
 	},
 	-- Auras
 	{
-		[0] = "Auras",
-		{ type = "Check", var = "aurasAtBottom", label = "Put Aura Icons at the Bottom Instead of Top", tip = "Puts the aura icons at the bottom of the tip instead of the default top", y = 12 },
-		{ type = "Check", var = "showBuffs", label = "Show Unit Buffs", tip = "Show buffs of the unit" },
-		{ type = "Check", var = "showDebuffs", label = "Show Unit Debuffs", tip = "Show debuffs of the unit", y = 12 },
-		{ type = "Check", var = "selfAurasOnly", label = "Only Show Auras Coming from You", tip = "This will filter out and only display auras you cast yourself", y = 12 },
-		{ type = "Slider", var = "auraSize", label = "Aura Icon Dimension", min = 8, max = 60, step = 1 },
-		{ type = "Slider", var = "auraMaxRows", label = "Max Aura Rows", min = 1, max = 8, step = 1, y = 8 },
-		{ type = "Check", var = "showAuraCooldown", label = "Show Cooldown Models", tip = "With this option on, you will see a visual progress of the time left on the buff" },
+		[0] = "Ауры",
+		{ type = "Check", var = "aurasAtBottom", label = "Значки де/бафов снизу", tip = "Отобразить значки де/бафов внизу подсказки.", y = 12 },
+		{ type = "Check", var = "showBuffs", label = "Показать бафы", tip = "Показать бафы." },
+		{ type = "Check", var = "showDebuffs", label = "Показать дебафы", tip = "Показать дебафы.", y = 12 },
+		{ type = "Check", var = "selfAurasOnly", label = "Показывать только ваши ауры", tip = "Этот параметр отфильтрует и отобразит только те ауры, которые создали вы.", y = 12 },
+		{ type = "Slider", var = "auraSize", label = "Размер значка", min = 8, max = 60, step = 1 },
+		{ type = "Slider", var = "auraMaxRows", label = "Количество рядов", min = 1, max = 8, step = 1, y = 8 },
+		{ type = "Check", var = "showAuraCooldown", label = "Показать перезарядку", tip = "Показать оставшееся время действия бафов." },
 	},
 	-- Icon
 	{
-		[0] = "Icon",
-		{ type = "Check", var = "iconRaid", label = "Show Raid Icon", tip = "Shows the raid icon next to the tip" },
-		{ type = "Check", var = "iconFaction", label = "Show Faction Icon", tip = "Shows the faction icon next to the tip" },
-		{ type = "Check", var = "iconCombat", label = "Show Combat Icon", tip = "Shows a combat icon next to the tip, if the unit is in combat", y = 12 },
-		{ type = "DropDown", var = "iconAnchor", label = "Icon Anchor", list = TipTacDropDowns.AnchorPos },
-		{ type = "Slider", var = "iconSize", label = "Icon Dimension", min = 8, max = 60, step = 1 },
+		[0] = "Значки",
+		{ type = "Check", var = "iconRaid", label = "Показать значок рейда", tip = "Показать значок рейда рядом с подсказкой." },
+		{ type = "Check", var = "iconFaction", label = "Показать значок фракции", tip = "Показать значок фракции рядом с подсказкой." },
+		{ type = "Check", var = "iconCombat", label = "Показать значок боя", tip = "Показывает значок боя рядом с подсказкой, если юнит находится в бою.", y = 12 },
+		{ type = "DropDown", var = "iconAnchor", label = "Крепление", list = TipTacDropDowns.AnchorPos },
+		{ type = "Slider", var = "iconSize", label = "Размер", min = 8, max = 60, step = 1 },
 	},
 	-- Anchors
 	{
-		[0] = "Anchors",
-		{ type = "DropDown", var = "anchorWorldUnitType", label = "World Unit Type", list = TipTacDropDowns.AnchorType },
-		{ type = "DropDown", var = "anchorWorldUnitPoint", label = "World Unit Point", list = TipTacDropDowns.AnchorPos, y = 14 },
-		{ type = "DropDown", var = "anchorWorldTipType", label = "World Tip Type", list = TipTacDropDowns.AnchorType },
-		{ type = "DropDown", var = "anchorWorldTipPoint", label = "World Tip Point", list = TipTacDropDowns.AnchorPos, y = 14 },
-		{ type = "DropDown", var = "anchorFrameUnitType", label = "Frame Unit Type", list = TipTacDropDowns.AnchorType },
-		{ type = "DropDown", var = "anchorFrameUnitPoint", label = "Frame Unit Point", list = TipTacDropDowns.AnchorPos, y = 14 },
-		{ type = "DropDown", var = "anchorFrameTipType", label = "Frame Tip Type", list = TipTacDropDowns.AnchorType },
-		{ type = "DropDown", var = "anchorFrameTipPoint", label = "Frame Tip Point", list = TipTacDropDowns.AnchorPos, y = 14 },
+		[0] = "Крепления",
+		{ type = "DropDown", var = "anchorWorldUnitType", label = "Игроки и NPS", list = TipTacDropDowns.AnchorType },
+		{ type = "DropDown", var = "anchorWorldUnitPoint", label = "Позиция крепления\n (относ. подсказки)", list = TipTacDropDowns.AnchorPos, y = 14 },
+		{ type = "DropDown", var = "anchorWorldTipType", label = "Мировые объекты\n (трава, руда и тд.)", list = TipTacDropDowns.AnchorType },
+		{ type = "DropDown", var = "anchorWorldTipPoint", label = "Позиция крепления\n (относ. подсказки)", list = TipTacDropDowns.AnchorPos, y = 14 },
+		{ type = "DropDown", var = "anchorFrameUnitType", label = "Ваша подсказка", list = TipTacDropDowns.AnchorType },
+		{ type = "DropDown", var = "anchorFrameUnitPoint", label = "Позиция крепления\n (относ. подсказки)", list = TipTacDropDowns.AnchorPos, y = 14 },
+		{ type = "DropDown", var = "anchorFrameTipType", label = "Подсказки интерфейса", list = TipTacDropDowns.AnchorType },
+		{ type = "DropDown", var = "anchorFrameTipPoint", label = "Позиция крепления\n (относ. подсказки)", list = TipTacDropDowns.AnchorPos, y = 14 },
 	},
 	-- Mouse
 	{
-		[0] = "Mouse",
-		{ type = "Slider", var = "mouseOffsetX", label = "Mouse Anchor X Offset", min = -200, max = 200, step = 1 },
-		{ type = "Slider", var = "mouseOffsetY", label = "Mouse Anchor Y Offset", min = -200, max = 200, step = 1 },
+		[0] = "Мышь",
+		{ type = "Check", var = "mouseTip", label = "Смещение подсказки относительно указателя", y = 16 },
+		{ type = "Slider", var = "mouseOffsetX", label = "Смещение по оси X", min = -200, max = 200, step = 1 },
+		{ type = "Slider", var = "mouseOffsetY", label = "Смещение по оси Y", min = -200, max = 200, step = 1 },
 	},
 	-- Combat
 	{
-		[0] = "Combat",
-		{ type = "Check", var = "hideAllTipsInCombat", label = "Hide All Unit Tips in Combat", tip = "In combat, this option will prevent any unit tips from showing" },
-		{ type = "Check", var = "hideUFTipsInCombat", label = "Hide Unit Tips for Unit Frames in Combat", tip = "When you are in combat, this option will prevent tips from showing when you have the mouse over a unit frame", y = 8 },
-		{ type = "Check", var = "showHiddenTipsOnShift", label = "Still Show Hidden Tips when Holding Shift", tip = "When you have this option checked, and one of the above options, you can still force the tip to show, by holding down shift" },
---		{ type = "DropDown", var = "hideCombatTip", label = "Hide Tips in Combat For", list = { ["Unit Frames"] = "uf", ["All Tips"] = "all", ["No Tips"] = "none" } },
+		[0] = "Бой",
+		{ type = "Check", var = "hideAllTipsInCombat", label = "Скрыть все подсказки в бою", tip = "Эта опция предотвратит отображение подсказок в бою." },
+		{ type = "Check", var = "hideUFTipsInCombat", label = "Скрыть подсказки игроков в бою", tip = "Эта опция предотвратит отображение подсказок игроков в бою.", y = 8 },
+		{ type = "Check", var = "showHiddenTipsOnShift", label = "Показывать скрытые подсказки при удержании Shift", tip = "Если у вас включена эта опция и одна из вышеперечисленных, вы сможете увидеть подсказки, удерживая клавишу Shift." },
+--		{ type = "DropDown", var = "hideCombatTip", label = "Скрыть в бою для", list = { ["Юнит"] = "uf", ["Все"] = "all", ["Нет"] = "none" } },
 	},
 	-- Layouts
 	{
-		[0] = "Layouts",
-		{ type = "DropDown", label = "Layout Template", init = TipTacDropDowns.LoadLayout_Init, y = 20 },
+		[0] = "Стиль",
+		{ type = "DropDown", label = "Заготовки", init = TipTacDropDowns.LoadLayout_Init, y = 20 },
 --		{ type = "Text", label = "Save Layout", func = nil },
 --		{ type = "DropDown", label = "Delete Layout", init = TipTacDropDowns.DeleteLayout_Init },
 	},
@@ -177,10 +178,10 @@ local options = {
 -- TipTacTalents Support
 if (TipTacTalents) then
 	options[#options + 1] = {
-		[0] = "Talents",
-		{ type = "Check", var = "showTalents", label = "Enable TipTacTalents", tip = "This options makes the tip show the talents of other players", y = 12 },
-		{ type = "DropDown", var = "talentFormat", label = "Talent Format", list = { ["Elemental (57/14/00)"] = 1, ["Elemental"] = 2, ["57/14/00"] = 3,}, y = 8 },
-		{ type = "Slider", var = "talentCacheSize", label = "Talent Cache Size", min = 0, max = 50, step = 1 },
+		[0] = "Таланты",
+		{ type = "Check", var = "showTalents", label = "Показать ветку талантов", tip = "Эта опция покажет ветку талантов у игрока.", y = 12 },
+		{ type = "DropDown", var = "talentFormat", label = "Вид", list = { ["Стихии (57/14/00)"] = 1, ["Стихии"] = 2, ["57/14/00"] = 3,}, y = 8 },
+		{ type = "Slider", var = "talentCacheSize", label = "Размер кэша", min = 0, max = 50, step = 1 },
 	};
 end
 
@@ -245,21 +246,21 @@ f.btnAnchor:SetWidth(75);
 f.btnAnchor:SetHeight(24);
 f.btnAnchor:SetPoint("BOTTOMLEFT",f.outline,"BOTTOMRIGHT",10,3);
 f.btnAnchor:SetScript("OnClick",function() if (TipTac:IsVisible()) then TipTac:Hide(); else TipTac:Show(); end end);
-f.btnAnchor:SetText("Anchor");
+f.btnAnchor:SetText("Крепление");
 
 f.btnReset = CreateFrame("Button",nil,f,"UIPanelButtonTemplate");
 f.btnReset:SetWidth(75);
 f.btnReset:SetHeight(24);
 f.btnReset:SetPoint("LEFT",f.btnAnchor,"RIGHT",38,0);
 f.btnReset:SetScript("OnClick",Reset_OnClick);
-f.btnReset:SetText("Defaults");
+f.btnReset:SetText("Сброс");
 
 f.btnClose = CreateFrame("Button",nil,f,"UIPanelButtonTemplate");
 f.btnClose:SetWidth(75);
 f.btnClose:SetHeight(24);
 f.btnClose:SetPoint("BOTTOMRIGHT",-15,15);
 f.btnClose:SetScript("OnClick",function() f:Hide(); end);
-f.btnClose:SetText("Close");
+f.btnClose:SetText("Закрыть");
 
 UISpecialFrames[#UISpecialFrames + 1] = f:GetName();
 

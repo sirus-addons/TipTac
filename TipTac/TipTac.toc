@@ -1,7 +1,8 @@
 ## Interface: 30300
 ## Version: 10.05.01
 ## Title: TipTac
-## Author: Aezay (Earthen Ring EU)
+## Author: Aezay (Earthen Ring EU), Мастер (перевёл на русский)
 ## Notes: |@Version: 2@|Highly Customizable Tooltip Enhancement Addon
+## Notes-ruRU: |@Version: 2@|Заменяет стандартные тултипы к спеллам, вещам, игрокам, баффам и т.д.
 ## SavedVariables: TipTac_Config
 core.lua

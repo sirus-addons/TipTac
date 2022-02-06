@@ -114,6 +114,7 @@ local TT_DefaultConfig = {
 	anchorFrameTipType = "normal",
 	anchorFrameTipPoint = "BOTTOMRIGHT",
 
+	mouseTip = true,
 	mouseOffsetX = 0,
 	mouseOffsetY = 0,
 
@@ -1210,5 +1211,9 @@ function tt:ApplyGeneralAppearance(first)
 	-- Auras - Has to be updated last because it depends on the tips new dimention
 	if (cfg.showBuffs or cfg.showDebuffs) then
 		SetupAuras();
+	end
+	-- Custom
+	if (cfg.mouseTip) then
+		
 	end
 end
