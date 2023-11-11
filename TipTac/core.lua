@@ -491,7 +491,7 @@ local function ModifyUnitTooltip()
 		if unitGUID then
 			local itemLevel = ItemLevelMixIn:GetItemLevel( unitGUID )
 			if itemLevel then
-				local color = ItemLevelMixIn:GetColor(itemLevel)
+				local color = GetItemLevelColor(itemLevel)
 
 				if color then
 					tooltipLine = string.gsub(TOOLTIP_UNIT_LEVEL_ILEVEL_LABEL, TOOLTIP_UNIT_LEVEL_ILEVEL_LOADING_LABEL, color:WrapTextInColorCode(itemLevel))
