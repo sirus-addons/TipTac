@@ -2,6 +2,12 @@
 local showItemLevelAndId = false;
 local showSpellIdAndRank = true;
 
+local TXT_SPELL_ID, TXT_CRITERIA, TXT_OF = "Spell ID", "Achievement Criteria", "of";
+if (GetLocale() == "ruRU") then
+	TXT_SPELL_ID, TXT_CRITERIA, TXT_OF = "ID заклинания", "Критерии достижения", "из";
+end
+local TXT_EARNED = (ACHIEVEMENT_TOOLTIP_COMPLETE:match("^(.-)%s*[|%%]") or ACHIEVEMENT_TOOLTIP_COMPLETE);
+
 -- Tables
 local TipTypeFuncs = {};
 local criteriaList = {};
@@ -48,7 +54,7 @@ function TipTypeFuncs.spell(tip,refString,id)
 	tipIcon:SetTexture(icon);
 	tipIcon:Show();
 	if (showSpellIdAndRank) then
-		tip:AddLine("Spell ID: "..id..(rank and rank ~= "" and ", "..rank or ""),0.2,0.6,1);
+		tip:AddLine(TXT_SPELL_ID..": "..id..(rank and rank ~= "" and ", "..rank or ""),0.2,0.6,1);
 		tip:Show();
 	end
 end
@@ -88,7 +94,7 @@ function TipTypeFuncs.achievement(tip,refString,id)
 		end
 	end
 	-- Cache Info
-	local complete = _G[tip:GetName().."TextLeft3"]:GetText();
+	local complete = (_G[tip:GetName().."TextLeft3"]:GetText() or "");
 	local title, points, _, _, _, _, description, _, icon, reward = select(2,GetAchievementInfo(id));
 	-- Icon
 	if (tip == ItemRefTooltip) then
@@ -105,10 +111,10 @@ function TipTypeFuncs.achievement(tip,refString,id)
 		tip:AddLine(reward,0.2,0.6,1);
 	end
 	tip:AddLine(description,1,1,1,1);
-	tip:AddLine(BoolCol(complete:match("earned"))..complete);
+	tip:AddLine(BoolCol(complete:find(TXT_EARNED,1,true))..complete);
 	if (#criteriaList > 0) then
 		tip:AddLine(" ");
-		tip:AddLine("Achievement Criteria |cffffffff"..criteriaComplete.."|r of |cffffffff"..#criteriaList);
+		tip:AddLine(TXT_CRITERIA.." |cffffffff"..criteriaComplete.."|r "..TXT_OF.." |cffffffff"..#criteriaList);
 		local r1, g1, b1, r2, g2, b2;
 		local myDone1, myDone2;
 		for i = 1, #criteriaList, 2 do

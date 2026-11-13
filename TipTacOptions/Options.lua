@@ -254,6 +254,11 @@ f.btnReset:SetPoint("LEFT",f.btnAnchor,"RIGHT",38,0);
 f.btnReset:SetScript("OnClick",Reset_OnClick);
 f.btnReset:SetText("Defaults");
 
+if (GameTooltipDefaultContainer) then
+	f.btnAnchor:Hide();
+	f.btnReset:SetPoint("LEFT",f.btnAnchor);
+end
+
 f.btnClose = CreateFrame("Button",nil,f,"UIPanelButtonTemplate");
 f.btnClose:SetWidth(75);
 f.btnClose:SetHeight(24);
@@ -363,11 +368,15 @@ function f:BuildCategoryPage()
 			frame:SetText(cfg[option.var]:gsub("|","||"));
 		end
 		-- Anchor the Frame
-		frame:ClearAllPoints();
-		frame:SetPoint("TOPLEFT",f.outline,"TOPRIGHT",factory.objectOffsetX[option.type] + (option.x or 0),yOffset);
-		yOffset = (yOffset - frame:GetHeight() - factory.objectOffsetY[option.type] - (option.y or 0));
-		-- Show
-		frame:Show();
+		if (GameTooltipDefaultContainer) and (option.var) and (option.var:match("^anchor.+Point$")) and (cfg[option.var:gsub("Point$","Type")] == "normal") then
+			frame:Hide();
+		else
+			frame:ClearAllPoints();
+			frame:SetPoint("TOPLEFT",f.outline,"TOPRIGHT",factory.objectOffsetX[option.type] + (option.x or 0),yOffset);
+			yOffset = (yOffset - frame:GetHeight() - factory.objectOffsetY[option.type] - (option.y or 0));
+			-- Show
+			frame:Show();
+		end
 	end
 	-- End Update
 	ignoreConfigUpdate = nil;
