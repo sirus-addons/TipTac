@@ -43,6 +43,9 @@ TipTacDropDowns.BarTextFormat = {
 local function Default_SelectValue(dropDown,entry,index)
 	cfg[dropDown.option.var] = entry.value;
 	TipTac:ApplySettings();
+	if (GameTooltipDefaultContainer) and (dropDown.option.var:match("^anchor.+Type$")) then
+		TipTacOptions:BuildCategoryPage();
+	end
 end
 
 function TipTacDropDowns.Default_Init(dropDown,list)

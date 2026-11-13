@@ -163,6 +163,14 @@ local TT_Reaction = {
 	FACTION_STANDING_LABEL5,	-- Friendly (Exalted)
 	DEAD,						-- Dead
 };
+local TT_Targeting, TT_TargetedBy = "Targeting: ", "Targeted By (|cffffffff%d|r): %s";
+local TT_StatusDC, TT_StatusAFK, TT_StatusDND = " <DC>", " <AFK>", " <DND>";
+if (GetLocale() == "ruRU") then
+	TT_Targeting, TT_TargetedBy = "Цель: ", "Выбрали целью (|cffffffff%d|r): %s";
+	TT_StatusDC, TT_StatusAFK, TT_StatusDND = " <Не в сети>", " <Отсутствует>", " <Не беспокоить>";
+	TT_Reaction[1] = "Занят";
+	TT_DefaultConfig.targetYouText = "<<ВЫ>>";
+end
 
 -- Colors
 local CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS;
@@ -439,7 +447,7 @@ local function ModifyUnitTooltip()
 		end
 		-- dc, afk or dnd
 		if (cfg.showStatus) then
-			local status = (not UnitIsConnected(unit) and " <DC>") or (UnitIsAFK(unit) and " <AFK>") or (UnitIsDND(unit) and " <DND>");
+			local status = (not UnitIsConnected(unit) and TT_StatusDC) or (UnitIsAFK(unit) and TT_StatusAFK) or (UnitIsDND(unit) and TT_StatusDND);
 			if (status) then
 				lineOne[#lineOne + 1] = COL_WHITE;
 				lineOne[#lineOne + 1] = status;
@@ -486,7 +494,7 @@ local function ModifyUnitTooltip()
 				lineOne[#lineOne + 1] = "\n  ";
 				AddTarget(lineOne,target);
 			elseif (cfg.showTarget == "last") then
-				lineInfo[#lineInfo + 1] = "\n|cffffd100Targeting: ";
+				lineInfo[#lineInfo + 1] = "\n|cffffd100"..TT_Targeting;
 				AddTarget(lineInfo,target);
 			end
 		end
@@ -546,7 +554,7 @@ local function AddTargetedBy()
 			targetedList[#targetedList] = nil;
 			gtt:AddLine(" ",nil,nil,nil,1);
 			local line = _G["GameTooltipTextLeft"..gtt:NumLines()];
-			line:SetFormattedText("Targeted By (|cffffffff%d|r): %s",(#targetedList + 1) / 3,table.concat(targetedList));
+			line:SetFormattedText(TT_TargetedBy,(#targetedList + 1) / 3,table.concat(targetedList));
 			wipe(targetedList);
 		end
 	end
@@ -577,7 +585,7 @@ end
 local function SetupHealthAndPowerBar()
 	u.powerType = UnitPowerType(u.token);
 	-- Visibility
-	if (cfg.healthBar) then
+	if (cfg.healthBar) and not (gtt.default and GameTooltipDefaultContainer and not GameTooltipDefaultContainer:ShouldShowHealthBar()) then
 		bars[1]:Show();
 		if (u.isPlayer) and (cfg.healthBarClassColor) then
 			local color = CLASS_COLORS[u.classEng];
@@ -842,6 +850,7 @@ local gtt_lastUpdate = 0;
 local gtt_newHeight;
 local gtt_anchorType;
 local gtt_anchorPoint;
+local gtt_pvpLine;
 
 -- Get The Anchor Position Depending on the Tip Content and Parent Frame -- Do not depend on "u.token" here, as it might not have been cleared yet!
 -- Checking "mouseover" here isn't ideal due to actionbars, it will sometimes return true because of selfcast.
@@ -963,6 +972,10 @@ local function GTTHook_OnTooltipCleared(self,...)
 	wipe(u);
 	gtt_lastUpdate = 0;
 	gtt_newHeight = nil;
+	if (gtt_pvpLine) then
+		_G["GameTooltipTextLeft"..(gtt_pvpLine + 1)]:SetPoint("TOPLEFT",_G["GameTooltipTextLeft"..gtt_pvpLine],"BOTTOMLEFT",0,-2);
+		gtt_pvpLine = nil;
+	end
 	self.fadeOut = nil;
 	bars.offset = nil;
 	for i = 1, #bars do
@@ -1191,6 +1204,11 @@ local function ApplyTipTacAppearance(first)
 		local line = _G["GameTooltipTextLeft"..i];
 		if (line:GetText() == PVP_ENABLED) then
 			line:SetText(nil);
+			line:Hide();
+			if (i < gtt:NumLines()) then
+				gtt_pvpLine = i;
+				_G["GameTooltipTextLeft"..(i + 1)]:SetPoint("TOPLEFT",_G["GameTooltipTextLeft"..(i - 1)],"BOTTOMLEFT",0,-2);
+			end
 			break;
 		end
 	end
