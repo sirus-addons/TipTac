@@ -1,4 +1,4 @@
-local REVISION = 7;
+local REVISION = 8;
 if (type(AzOptionsFactory) == "table") and (AzOptionsFactory.vers >= REVISION) then
 	return;
 end
@@ -81,8 +81,8 @@ local function Slider_OnValueChanged(self)
 end
 
 -- OnMouseWheel
-local function Slider_OnMouseWheel(self)
-	self:SetValue(self:GetValue() + self:GetParent().option.step * arg1);
+local function Slider_OnMouseWheel(self,delta)
+	self:SetValue(self:GetValue() + self:GetParent().option.step * delta);
 end
 
 -- New Slider

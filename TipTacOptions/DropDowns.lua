@@ -11,7 +11,7 @@ TipTacDropDowns.FontFlags = {
 	["Thick Outline"] = "THICKOUTLINE",
 };
 TipTacDropDowns.AnchorType = {
-	["Normal Anchor"] = "normal",
+	[GameTooltipDefaultContainer and "Normal Anchor (Edit Mode)" or "Normal Anchor"] = "normal",
 	["Mouse Anchor"] = "mouse",
 	["Parent Anchor"] = "parent",
 };
@@ -43,6 +43,9 @@ TipTacDropDowns.BarTextFormat = {
 local function Default_SelectValue(dropDown,entry,index)
 	cfg[dropDown.option.var] = entry.value;
 	TipTac:ApplySettings();
+	if (GameTooltipDefaultContainer) and (dropDown.option.var:match("^anchor.+Type$")) then
+		TipTacOptions:BuildCategoryPage();
+	end
 end
 
 function TipTacDropDowns.Default_Init(dropDown,list)

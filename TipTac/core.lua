@@ -133,7 +133,17 @@ local TT_TipsToModify = {
 	"ShoppingTooltip2",
 	"ShoppingTooltip3",
 	"ItemRefTooltip",
+	"ItemRefShoppingTooltip1",
+	"ItemRefShoppingTooltip2",
+	"ItemRefShoppingTooltip3",
 	"WorldMapTooltip",
+	"WorldMapCompareTooltip1",
+	"WorldMapCompareTooltip2",
+	"WorldMapCompareTooltip3",
+	"EncounterJournalTooltip",
+	"SmallTextTooltip",
+	"QuickKeybindTooltip",
+	"FriendsTooltip",
 	"AtlasLootTooltip",
 	"QuestHelperTooltip",
 	"QuestGuru_QuestWatchTooltip",
@@ -153,6 +163,14 @@ local TT_Reaction = {
 	FACTION_STANDING_LABEL5,	-- Friendly (Exalted)
 	DEAD,						-- Dead
 };
+local TT_Targeting, TT_TargetedBy = "Targeting: ", "Targeted By (|cffffffff%d|r): %s";
+local TT_StatusDC, TT_StatusAFK, TT_StatusDND = " <DC>", " <AFK>", " <DND>";
+if (GetLocale() == "ruRU") then
+	TT_Targeting, TT_TargetedBy = "Цель: ", "Выбрали целью (|cffffffff%d|r): %s";
+	TT_StatusDC, TT_StatusAFK, TT_StatusDND = " <Не в сети>", " <Отсутствует>", " <Не беспокоить>";
+	TT_Reaction[1] = "Занят";
+	TT_DefaultConfig.targetYouText = "<<ВЫ>>";
+end
 
 -- Colors
 local CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS;
@@ -192,6 +210,7 @@ local lineInfo = {};
 local targetedList = {};
 local auras = {};
 local bars = {};
+local defaultAnchoredTips = {};
 local tipIcon;
 
 --------------------------------------------------------------------------------------------------------
@@ -428,7 +447,7 @@ local function ModifyUnitTooltip()
 		end
 		-- dc, afk or dnd
 		if (cfg.showStatus) then
-			local status = (not UnitIsConnected(unit) and " <DC>") or (UnitIsAFK(unit) and " <AFK>") or (UnitIsDND(unit) and " <DND>");
+			local status = (not UnitIsConnected(unit) and TT_StatusDC) or (UnitIsAFK(unit) and TT_StatusAFK) or (UnitIsDND(unit) and TT_StatusDND);
 			if (status) then
 				lineOne[#lineOne + 1] = COL_WHITE;
 				lineOne[#lineOne + 1] = status;
@@ -475,7 +494,7 @@ local function ModifyUnitTooltip()
 				lineOne[#lineOne + 1] = "\n  ";
 				AddTarget(lineOne,target);
 			elseif (cfg.showTarget == "last") then
-				lineInfo[#lineInfo + 1] = "\n|cffffd100Targeting: ";
+				lineInfo[#lineInfo + 1] = "\n|cffffd100"..TT_Targeting;
 				AddTarget(lineInfo,target);
 			end
 		end
@@ -535,7 +554,7 @@ local function AddTargetedBy()
 			targetedList[#targetedList] = nil;
 			gtt:AddLine(" ",nil,nil,nil,1);
 			local line = _G["GameTooltipTextLeft"..gtt:NumLines()];
-			line:SetFormattedText("Targeted By (|cffffffff%d|r): %s",(#targetedList + 1) / 3,table.concat(targetedList));
+			line:SetFormattedText(TT_TargetedBy,(#targetedList + 1) / 3,table.concat(targetedList));
 			wipe(targetedList);
 		end
 	end
@@ -566,7 +585,7 @@ end
 local function SetupHealthAndPowerBar()
 	u.powerType = UnitPowerType(u.token);
 	-- Visibility
-	if (cfg.healthBar) then
+	if (cfg.healthBar) and not (gtt.default and GameTooltipDefaultContainer and not GameTooltipDefaultContainer:ShouldShowHealthBar()) then
 		bars[1]:Show();
 		if (u.isPlayer) and (cfg.healthBarClassColor) then
 			local color = CLASS_COLORS[u.classEng];
@@ -690,6 +709,23 @@ local function CreateAura()
 	return aura;
 end
 
+local TT_ServiceAuraLists = {
+	"FACTION_OVERRIDE_BY_DEBUFFS",
+	"ZODIAC_DEBUFFS",
+	"S_CATEGORY_SPELL_ID",
+	"S_VIP_STATUS_DATA",
+	"S_PREMIUM_SPELL_ID",
+};
+
+local function IsServiceAura(spellID)
+	for _, name in ipairs(TT_ServiceAuraLists) do
+		local list = _G[name];
+		if (list) and (list[spellID]) then
+			return true;
+		end
+	end
+end
+
 -- The outer variable "pos" is the actual index of the shown auras we are actually going to use, in case certain auras are filtered. The "index" variable is for querying the auras.
 local function SetupAuras()
 	-- Init
@@ -699,11 +735,11 @@ local function SetupAuras()
 	if (cfg.showBuffs) then
 		local index = 1;
 		while (true) do
-			local _, _, iconTexture, count, debuffType, duration, endTime, casterUnit = UnitAura(u.token,index,"HELPFUL");
+			local _, _, iconTexture, count, debuffType, duration, endTime, casterUnit, _, _, spellID = UnitAura(u.token,index,"HELPFUL");
 			if (not iconTexture) or (pos / maxAuras > cfg.auraMaxRows) then
 				break;
 			end
-			if (not cfg.selfAurasOnly or casterUnit == "player" or casterUnit == "pet" or casterUnit == "vehicle") then
+			if (not IsServiceAura(spellID)) and (not cfg.selfAurasOnly or casterUnit == "player" or casterUnit == "pet" or casterUnit == "vehicle") then
 				local aura = auras[pos] or CreateAura();
 				-- Anchor It
 				aura:ClearAllPoints();
@@ -747,11 +783,11 @@ local function SetupAuras()
 		local lineOffset = floor(buffCount / maxAuras);
 		local buffsOnFirstLine = (maxAuras - buffCount % maxAuras);
 		while (true) do
-			local _, _, iconTexture, count, debuffType, duration, endTime, casterUnit = UnitAura(u.token,index,"HARMFUL");
+			local _, _, iconTexture, count, debuffType, duration, endTime, casterUnit, _, _, spellID = UnitAura(u.token,index,"HARMFUL");
 			if (not iconTexture) or (pos / maxAuras > cfg.auraMaxRows) then
 				break;
 			end
-			if (not cfg.selfAurasOnly or casterUnit == "player" or casterUnit == "pet" or casterUnit == "vehicle") then
+			if (not IsServiceAura(spellID)) and (not cfg.selfAurasOnly or casterUnit == "player" or casterUnit == "pet" or casterUnit == "vehicle") then
 				local aura = auras[pos] or CreateAura();
 				-- Anchor It
 				aura:ClearAllPoints();
@@ -814,6 +850,7 @@ local gtt_lastUpdate = 0;
 local gtt_newHeight;
 local gtt_anchorType;
 local gtt_anchorPoint;
+local gtt_pvpLine;
 
 -- Get The Anchor Position Depending on the Tip Content and Parent Frame -- Do not depend on "u.token" here, as it might not have been cleared yet!
 -- Checking "mouseover" here isn't ideal due to actionbars, it will sometimes return true because of selfcast.
@@ -825,14 +862,12 @@ local function GetAnchorPosition()
 end
 
 -- HOOK: GTT:Show -- If there are any bar offsets, resize the tip
-local gttShow = gtt.Show;
-gtt.Show = function(self,...)
-	gttShow(self,...);
+hooksecurefunc(gtt,"Show",function(self)
 	if (bars.offset) then
 		gtt_newHeight = (self:GetHeight() + bars.offset);
 		self:SetHeight(gtt_newHeight);
 	end
-end
+end);
 
 -- HOOK: GTT:FadeOut -- This allows us to check when the tip is fading out.
 local gttFadeOut = gtt.FadeOut;
@@ -937,6 +972,10 @@ local function GTTHook_OnTooltipCleared(self,...)
 	wipe(u);
 	gtt_lastUpdate = 0;
 	gtt_newHeight = nil;
+	if (gtt_pvpLine) then
+		_G["GameTooltipTextLeft"..(gtt_pvpLine + 1)]:SetPoint("TOPLEFT",_G["GameTooltipTextLeft"..gtt_pvpLine],"BOTTOMLEFT",0,-2);
+		gtt_pvpLine = nil;
+	end
 	self.fadeOut = nil;
 	bars.offset = nil;
 	for i = 1, #bars do
@@ -954,6 +993,10 @@ end
 local function TipHook_OnHide(self,...)
 	self:SetBackdropColor(unpack(cfg.tipColor));				-- Default: For most: (0.1,0.1,0.2), World Objects?: (0,0.2,0.35)
 	self:SetBackdropBorderColor(unpack(cfg.tipBorderColor));	-- Default: (1,1,1,1)
+	if (defaultAnchoredTips[self]) then
+		defaultAnchoredTips[self] = nil;
+		self:SetScale(cfg.gttScale);
+	end
 end
 
 -- OnTooltipSetItem Script -- For item colored border
@@ -993,6 +1036,11 @@ function tt:HookTips()
 		end
 		-- Position Tip to Normal, Mouse or Parent anchor
 		gtt_anchorType, gtt_anchorPoint = GetAnchorPosition();
+		tooltip:SetScale(cfg.gttScale * (GameTooltipDefaultContainer and GameTooltipDefaultContainer:GetScale() or 1));
+		defaultAnchoredTips[tooltip] = true;
+		if (gtt_anchorType ~= "mouse") and (gtt_anchorType ~= "parent") and (GameTooltipDefaultContainer) then
+			return;
+		end
 		tooltip:SetOwner(parent,"ANCHOR_NONE");
 		if (gtt_anchorType == "mouse") then
 			tt:AnchorFrameToMouse(tooltip);
@@ -1001,7 +1049,6 @@ function tt:HookTips()
 		else
 			tooltip:SetPoint(gtt_anchorPoint,tt);
 		end
-		tooltip.default = 1;
 	end);
 	-- Clear this function as it's not needed anymore
 	self.HookTips = nil;
@@ -1157,6 +1204,11 @@ local function ApplyTipTacAppearance(first)
 		local line = _G["GameTooltipTextLeft"..i];
 		if (line:GetText() == PVP_ENABLED) then
 			line:SetText(nil);
+			line:Hide();
+			if (i < gtt:NumLines()) then
+				gtt_pvpLine = i;
+				_G["GameTooltipTextLeft"..(i + 1)]:SetPoint("TOPLEFT",_G["GameTooltipTextLeft"..(i - 1)],"BOTTOMLEFT",0,-2);
+			end
 			break;
 		end
 	end

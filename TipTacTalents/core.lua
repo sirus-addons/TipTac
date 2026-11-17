@@ -7,6 +7,10 @@ local cache = {};
 local current = {};
 local TALENTS_PREFIX = TALENTS..":|cffffffff ";
 local CACHE_SIZE = 25;		-- Change cache size here (Default 25)
+local TXT_NO_TALENTS, TXT_LOADING = "No Talents", "Loading...";
+if (GetLocale() == "ruRU") then
+	TXT_NO_TALENTS, TXT_LOADING = "Нет талантов", "Загрузка...";
+end
 
 -- Allow these to be accessed through other addons
 ttt.cache = cache;
@@ -28,7 +32,7 @@ local function GatherTalents(isInspect)
 	-- Customise output. Use TipTac setting if it exists, otherwise just use formatting style one.
 	local talentFormat = (TipTac_Config and TipTac_Config.talentFormat or 1);
 	if (current[maxTree] == 0) then
-		current.format = "No Talents";
+		current.format = TXT_NO_TALENTS;
 	elseif (talentFormat == 1) then
 		current.format = current.tree.." ("..current[1].."/"..current[2].."/"..current[3]..")";
 	elseif (talentFormat == 2) then
@@ -113,7 +117,7 @@ gtt:HookScript("OnTooltipSetUnit",function(self,...)
 				end
 			end
 			if (allowInspect) then
-				self:AddLine(TALENTS_PREFIX.."Loading...");
+				self:AddLine(TALENTS_PREFIX..TXT_LOADING);
 			end
 		end
 	end
